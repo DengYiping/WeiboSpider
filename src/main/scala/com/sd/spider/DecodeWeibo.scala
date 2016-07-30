@@ -33,11 +33,6 @@ trait DecodeWeibo {
     }
   }
 
-
-
-
-
-
   def parse_jsoup(s:String):org.jsoup.nodes.Document = {
     val level1 = Jsoup.parse(s.replace("\\",""))
 
