@@ -40,18 +40,14 @@ class CookiedRequesterTest extends TestKit(ActorSystem()) with ImplicitSender wi
 
     val tempRef = system.actorOf(Props(new Actor{
       def receive = {
-        case x:HttpResponse => if(x.status.isSuccess()) s ! "Success"
+        case (x:HttpResponse, m:Any) => if(x.status.isSuccess()) s ! "Success"
         case y => s ! y
       }
     }))
 
 
-    val untestedRef = system.actorOf(Props(new CookiedRequester {
-      override val parser: ActorRef = tempRef
-    }))
-
-
-    untestedRef ! Get(uri, "")
+    val untestedRef = system.actorOf(Props(new CookiedRequester{}))
+    untestedRef ! Request(Get(uri, ""), tempRef)
 
     expectMsg("Success")
   }
@@ -75,19 +71,14 @@ class CookiedRequesterTest extends TestKit(ActorSystem()) with ImplicitSender wi
 
     val tempRef = system.actorOf(Props(new Actor{
       def receive = {
-        case x:HttpResponse => if(x.status.isSuccess()) s ! "Success"
+        case (x:HttpResponse, m:Any) => if(x.status.isSuccess()) s ! "Success"
         case y => s ! y
       }
     }))
 
 
-    val untestedRef = system.actorOf(Props(new CookiedRequester {
-      override val parser: ActorRef = tempRef
-    }))
-
-
-    untestedRef ! Get(uri, "abc=efg;")
-
+    val untestedRef = system.actorOf(Props(new CookiedRequester {}))
+    untestedRef ! Request(Get(uri, "abc=efg;"), tempRef)
     expectMsg("Success")
   }
 }

@@ -6,14 +6,13 @@ package com.sd.spider
 import org.jsoup.nodes.Document
 import com.sd.model.UserInfo
 import scala.collection.JavaConverters._
-trait UserInfoParser {
-
+trait WeiboUserInfoParser {
   /**
     *
     * @param string The String that need to remove /n and /nr
     * @return clean text
     */
-  def cleanup(string:String) = string.replace("t", "").replace("rn", "").trim
+  private def cleanup(string:String) = string.replace("t", "").replace("rn", "").trim
 
   def parse_user_info(html:Document):UserInfo = {
     val infos = html.getElementsByAttributeValue("class", "li_1 clearfix").asScala
@@ -46,4 +45,5 @@ trait UserInfoParser {
     }
     infoBuilder.build()
   }
+
 }

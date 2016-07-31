@@ -18,7 +18,9 @@ trait DecodeWeibo {
     * Sina weibo's page is nested in javascript.
     * In order to make it less nasty, we will de-nest the html and get it
     */
-  @Nullable private def getInlineHtml(script:String):String = {
+  @Nullable
+  @inline
+  private def getInlineHtml(script:String):String = {
 
     /**
       *   Regex : .*?"html":(.+)"}\)
@@ -33,7 +35,8 @@ trait DecodeWeibo {
     }
   }
 
-  def parse_jsoup(s:String):org.jsoup.nodes.Document = {
+
+  def decode(s:String):org.jsoup.nodes.Document = {
     val level1 = Jsoup.parse(s.replace("\\",""))
 
     val temp = level1.getElementsByTag("script").iterator()
